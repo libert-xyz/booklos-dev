@@ -20,9 +20,11 @@ class books(models.Model):
     author = models.CharField(max_length=101, null=True)
     number_pages = models.IntegerField(null=True)
     publisher = models.CharField(max_length=100, null=True)
-    #price = models.CharField(max_length=10, default=True)
+    price = models.CharField(max_length=15)
+    url = models.TextField()
+    reviews = models.TextField()
 
-    updated = models.DateTimeField(auto_now=True, auto_now_add=False)
+    #updated = models.DateTimeField(auto_now=True, auto_now_add=False)
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
 
     def __str__(self):

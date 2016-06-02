@@ -5,6 +5,7 @@ from booklos.models import books
 from django.conf import settings
 from django.db.models.signals import pre_save
 from django.utils.text import slugify
+from django.utils import timezone
 import datetime
 
 
@@ -31,20 +32,37 @@ def run():
     amazon = AmazonAPI(settings.AMZ, settings.AMZSCRT, settings.AMZID)
     query = amazon.search(Keywords='free kindle books', SearchIndex = 'KindleStore')
 
+
+
+
     for i in query:
-        if i.asin not in b.id:
+
+        #new = books.objects.get(id=i.asin)
+        b = books()
+
+        #if book exists update the price and the update timestamp
+
+        try:
+
+            q = books.objects.get(id=i.asin)
+            #if len(new) > 0:
+            if i.price_and_currency[0] != None:
+                q.price = i.price_and_currency[0]
+            q.save()
+
+        except:
+
+
             b.id=(i.asin)
             b.title = (i.title)
             b.description = (i.editorial_review)
-            b.image = (i.medium_image_url)
+            b.image = (i.large_image_url)
             b.author = (i.author)
             b.number_pages = (i.pages)
             b.publisher = (i.publisher)
-
+            b.price = 'Free'
+            b.url = (i.offer_url)
+            b.reviews = (i.reviews[1])
             b.slug = create_slug(b)
-            b.updated = datetime.datetime.now()
-            b.timestamp = datetime.datetime.now()
-
-
 
             b.save()
