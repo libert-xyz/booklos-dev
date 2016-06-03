@@ -1,6 +1,29 @@
 {% extends 'base.html' %}
 
 
+
+{% block title %}
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Best Free e-books selections. Updated daily. Kindle Free Books">
+<meta name="author" content="booklos">
+<meta name="Keywords" content="kindle, books, free books, free kindle books, free ebooks, e-books, free e-books">
+
+
+<meta property="og:url" content="http://www.booklos.com" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Booklos - Free Kindle Books - E-books" />
+<meta property="og:description" content="Best Free e-books selections. Updated daily. Kindle Free Books" />
+<meta property="og:image" content="http://static01.nyt.com/images/2015/02/19/arts/international/19iht-btnumbers19A/19iht-btnumbers19A-facebookJumbo-v2.jpg" />
+
+
+<title>Booklos - Free Kindle Books - E-books</title>
+
+{% endblock title%}
+
+
 {% block content %}
 
 
@@ -24,17 +47,20 @@
 
                 <div class="col-sm-4 col-lg-4 col-md-4">
                     <div class="thumbnail">
-                        <img class="img-responsive" src="{{obj.image}}" alt="">
+
+                        <a href="{{obj.get_absolute_url}}">
+                        <img class="img-responsive imgsize" src="{{obj.image}}" alt=""> </a>
                         <div class="caption">
                           <!--
                             <h4 class="pull-right">$24.99</h4> -->
-                            <h3><a href="{{obj.get_absolute_url}}">{{obj.title}}</a>
-                            </h3>
+                            <h4><a href="{{obj.get_absolute_url}}">{{obj.title | slice:"45"}}</a>
+                            </h4>
 
-                              <!--
-                            <p>See more snippets like this online store item at
-                              <a target="_blank" href="http://www.bootsnipp.com">Bootsnipp - http://bootsnipp.com</a>.
-                            </p> -->
+
+                            <p><span class="glyphicon glyphicon-calendar"></span> {{obj.timestamp | date}}</p>
+                            <h4><span class="label label-success">{{obj.price}}</span> <span class="label label-info">Kindle Edition</span>
+</h4>
+
 
                         </div>
                           <!--

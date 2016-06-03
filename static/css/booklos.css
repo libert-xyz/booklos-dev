@@ -1,0 +1,30 @@
+.navbar {
+  background-color: #5cb85c !important;
+}
+
+.navbar-default .navbar-brand {
+    color: #fff;
+}
+
+
+.navbar-brand {
+
+    font-size: 30px;
+
+}
+
+.fb_iframe_widget span {
+    padding-top: 14px;
+}
+
+.row {
+    padding-top: 20px;
+}
+
+.form-group {
+    padding-top: 3px;
+}
+
+.btn-primary {
+    margin-top: 3px;
+}

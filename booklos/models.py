@@ -34,6 +34,10 @@ class books(models.Model):
     def get_absolute_url(self):
         return reverse('booklos:detail',kwargs={'slug': self.slug})
 
+
+    class Meta:
+        ordering = ['-timestamp']
+
 #def create_slug(instance, new_slug=None):
 #    slug = slugify(instance.title)
 #    if new_slug is not None:

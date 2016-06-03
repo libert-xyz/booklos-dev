@@ -1,8 +1,29 @@
 {% extends 'base.html' %}
 
+
+
+{% block title %}
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Best Free e-books selections. Updated daily. Kindle Free Books. {{instance.title}}">
+<meta name="author" content="booklos {{instance.author}}">
+<meta name="Keywords" content="kindle, books, free books, free kindle books, free ebooks, e-books, free e-books , {{instance.title}}">
+
+
+<meta property="og:url" content="http://www.booklos.com" />
+<meta property="og:type" content="books.book" />
+<meta property="og:title" content="Booklos Free Kindle E-Books - {{instance.title}}" />
+<meta property="og:description" content="Best Free e-books selections. Updated daily. Kindle Free Books" />
+<meta property="og:image" content="{{instance.image}}" />
+
+<title>Booklos Free Kindle E-Books - {{instance.title}}</title>
+
+
+{% endblock title%}
+
     {% block content %}
-
-
 
     <!-- Page Content -->
     <div class="container">
@@ -12,13 +33,11 @@
             <div class="col-md-3">
               <!--
                 <p class="lead">Booklos</p> -->
-
-    <div >
-
+    <div>
 
 			 <img class="img-responsive" src="{{instance.image}}" alt="">
-       <h1><a href="{{instance.url}}">{{instance.price}} </a></h1>
-       <h4>{{instance.timestamp}}</h4>
+       <h2><span class="label label-success">{{instance.price}}</span>
+       <span class="label label-info">Kindle Edition</span></h2>
 
 
     </div>
@@ -39,12 +58,38 @@
                         </p>
 
 
-                        <hr><hr>
+                        <hr>
+
+                        <hr>
+
+
                         <p>{% autoescape off %} {{instance.description}} {% endautoescape %} </p>
 
                     </div>
+                    <hr>
+                    <hr>
+
+
+                    <script type="text/javascript">
+                            amzn_assoc_placement = "adunit0";
+                            amzn_assoc_enable_interest_ads = "true";
+                            amzn_assoc_tracking_id = "booklos-20";
+                            amzn_assoc_ad_mode = "auto";
+                            amzn_assoc_ad_type = "smart";
+                            amzn_assoc_marketplace = "amazon";
+                            amzn_assoc_region = "US";
+                            amzn_assoc_linkid = "bef26911608999ea26a742eb5830748f";
+                            amzn_assoc_emphasize_categories = "1000,133140011";
+                            amzn_assoc_fallback_mode = {"type":"search","value":"books"};
+                            amzn_assoc_default_category = "Books";
+                    </script>
+                    <script src="//z-na.amazon-adsystem.com/widgets/onejs?MarketPlace=US"></script>
+
+
 
                 </div>
+
+                <hr>
 
                 <div class="well">
 
