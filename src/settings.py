@@ -131,6 +131,6 @@ MEDIA_URL= '/media/'
 MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "media_cdn")
 
 
-AMZ = os.environ['AMZ']
-AMZSCRT = os.environ['AMZSCRT']
-AMZID = os.environ['AMZID']
+#AMZ = os.environ['AMZ']
+#AMZSCRT = os.environ['AMZSCRT']
+#AMZID = os.environ['AMZID']
