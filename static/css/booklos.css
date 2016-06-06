@@ -1,5 +1,24 @@
 .navbar {
   background-color: #5cb85c !important;
+  margin-bottom: 0;
+  border: none;
+}
+
+.navbar-footer{
+
+  margin-bottom: 0;
+  border: none;
+  background-color: #333;
+  height: 120px;
+  color: #bbb;
+  padding: 40px 0 0 110px;
+
+}
+
+
+.row-footer {
+    margin-right: 0;
+     margin-left: 0;
 }
 
 .navbar-default .navbar-brand {
