@@ -9,6 +9,15 @@ import datetime
 
 # Create your models here.
 
+
+class categories(models.Model):
+    category = models.CharField(max_length=20, unique=True)
+    #book = models.ForeignKey(books, on_delete=models.CASCADE)
+
+
+    def __str__(self):
+        return self.category
+
 class books(models.Model):
 
     id = models.CharField(max_length=20, primary_key=True)
@@ -22,7 +31,7 @@ class books(models.Model):
     publisher = models.CharField(max_length=100, null=True)
     price = models.CharField(max_length=15)
     url = models.TextField()
-    reviews = models.TextField()
+    category = models.ForeignKey(categories,on_delete=models.CASCADE)
 
     #updated = models.DateTimeField(auto_now=True, auto_now_add=False)
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
@@ -37,27 +46,3 @@ class books(models.Model):
 
     class Meta:
         ordering = ['-timestamp']
-
-#def create_slug(instance, new_slug=None):
-#    slug = slugify(instance.title)
-#    if new_slug is not None:
-#        slug = new_slug
-#    qs = books.objects.filter(slug=slug).order_by("-id")
-#    exists = qs.exists()
-#    if exists:
-#        new_slug = "%s-%s" %(slug, qs.first().id)
-#        return create_slug(instance, new_slug=new_slug)
-
-#    return slug
-
-#def pre_save_post_receiver(sender, instance, *args, **kwargs):
-#    if not instance.slug:
-#        instance.slug = create_slug(instance)
-
-#    if not instance.updated:
-#        instance.updated = datetime.datetime.now()
-
-#    if not instance.timestamp:
-#        instance.timestamp = datetime.datetime.now()
-
-#pre_save.connect(pre_save_post_receiver, sender=books)

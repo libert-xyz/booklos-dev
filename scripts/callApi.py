@@ -1,17 +1,15 @@
 import os
 import sys
 from amazon.api import AmazonAPI
-from booklos.models import books
+from booklos.models import books, categories
 from django.conf import settings
 from django.db.models.signals import pre_save
 from django.utils.text import slugify
 from django.utils import timezone
 import datetime
+from amazonproduct import API
 
 
-#amz = os.environ.get('AMZ')
-#amzscrt = os.environ.get('AMZSCRT')
-#amzid = os.environ.get('AMZID')
 
 def create_slug(instance, new_slug=None):
     slug = slugify(instance.title)
@@ -28,41 +26,66 @@ def create_slug(instance, new_slug=None):
 
 def run():
 
-    b = books()
-    amazon = AmazonAPI(settings.AMZ, settings.AMZSCRT, settings.AMZID)
-    query = amazon.search(Keywords='free kindle books', SearchIndex = 'KindleStore')
-
-
+    api = API(locale='us')
+    query = api.item_search('KindleStore', Keywords='free kindle books')
 
 
     for i in query:
 
         #new = books.objects.get(id=i.asin)
+        ##Search and Lookups
+        detail = api.item_lookup(str(i.ASIN))
+        image = api.item_lookup(str(i.ASIN), ResponseGroup='Images')
+        editorial_review = api.item_lookup(str(i.ASIN), ResponseGroup='EditorialReview')
+        attributes = api.item_lookup(str(i.ASIN),ResponseGroup='ItemAttributes')
+        cat = api.item_lookup(str(i.ASIN),ResponseGroup='BrowseNodes')
+
+        ##Database write
         b = books()
+        #c = categories()
+        b.id=(i.ASIN)
+        b.title=(i.ItemAttributes.Title.pyval.encode('utf8'))
 
-        #if book exists update the price and the update timestamp
-
-        try:
-
-            q = books.objects.get(id=i.asin)
-            #if len(new) > 0:
-            if i.price_and_currency[0] != None:
-                q.price = i.price_and_currency[0]
-            q.save()
+        try :
+            b.author=(i.ItemAttributes.Author.pyval.encode('utf8'))
+            b.publisher = (attributes.Items.Item.ItemAttributes.Publisher)
+            b.number_pages = (attributes.Items.Item.ItemAttributes.NumberOfPages)
 
         except:
+            b.author=None
+            b.publisher=None
+            b.number_pages=None
+
+        b.url=(detail.Items.Item.DetailPageURL)
+        ##Fix this , price change all the time
+        b.price = 'Free'
+        b.image = (image.Items.Item.LargeImage.URL)
+        b.description = (editorial_review.Items.Item.EditorialReviews.EditorialReview.Content.pyval.encode('utf8'))
+        b.slug = create_slug(b)
+        b.save()
+
+        try:
+            category_search = categories.objects.get(category=cat.Items.Item.BrowseNodes.BrowseNode.Ancestors.BrowseNode.Name)
+            #c = categories(category=category_search,book=b)
+            category_search.book = b
+            category_search.save()
+
+        except:
+            c = categories(category=cat.Items.Item.BrowseNodes.BrowseNode.Ancestors.BrowseNode.Name,book=b)
+            c.save()
+
+        #c.category = (cat.Items.Item.BrowseNodes.BrowseNode.Ancestors.BrowseNode.Name)
+        #c.book = (b.id)
 
 
-            b.id=(i.asin)
-            b.title = (i.title)
-            b.description = (i.editorial_review)
-            b.image = (i.large_image_url)
-            b.author = (i.author)
-            b.number_pages = (i.pages)
-            b.publisher = (i.publisher)
-            b.price = 'Free'
-            b.url = (i.offer_url)
-            b.reviews = (i.reviews[1])
-            b.slug = create_slug(b)
+        #### if book exists update the price and the update timestamp
 
-            b.save()
+        #try:
+
+        #    q = books.objects.get(id=i.asin)
+            #if len(new) > 0:
+        #    if i.price_and_currency[0] != None:
+        #        q.price = i.price_and_currency[0]
+        #    q.save()
+
+        #except:
