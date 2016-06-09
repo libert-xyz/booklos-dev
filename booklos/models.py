@@ -11,7 +11,7 @@ import datetime
 
 
 class categories(models.Model):
-    category = models.CharField(max_length=20, unique=True)
+    category = models.CharField(max_length=20,unique=True)
     #book = models.ForeignKey(books, on_delete=models.CASCADE)
 
 
@@ -31,7 +31,7 @@ class books(models.Model):
     publisher = models.CharField(max_length=100, null=True)
     price = models.CharField(max_length=15)
     url = models.TextField()
-    category = models.ForeignKey(categories,on_delete=models.CASCADE)
+    category = models.ForeignKey(categories,on_delete=models.CASCADE,null=True)
 
     #updated = models.DateTimeField(auto_now=True, auto_now_add=False)
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)

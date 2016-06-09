@@ -34,14 +34,15 @@ def run():
 
         #new = books.objects.get(id=i.asin)
         ##Search and Lookups
+
         detail = api.item_lookup(str(i.ASIN))
         image = api.item_lookup(str(i.ASIN), ResponseGroup='Images')
         editorial_review = api.item_lookup(str(i.ASIN), ResponseGroup='EditorialReview')
         attributes = api.item_lookup(str(i.ASIN),ResponseGroup='ItemAttributes')
         cat = api.item_lookup(str(i.ASIN),ResponseGroup='BrowseNodes')
-
         ##Database write
         b = books()
+
         #c = categories()
         b.id=(i.ASIN)
         b.title=(i.ItemAttributes.Title.pyval.encode('utf8'))
@@ -50,7 +51,6 @@ def run():
             b.author=(i.ItemAttributes.Author.pyval.encode('utf8'))
             b.publisher = (attributes.Items.Item.ItemAttributes.Publisher)
             b.number_pages = (attributes.Items.Item.ItemAttributes.NumberOfPages)
-
         except:
             b.author=None
             b.publisher=None
@@ -59,20 +59,47 @@ def run():
         b.url=(detail.Items.Item.DetailPageURL)
         ##Fix this , price change all the time
         b.price = 'Free'
-        b.image = (image.Items.Item.LargeImage.URL)
+        b.image =    (image.Items.Item.LargeImage.URL)
         b.description = (editorial_review.Items.Item.EditorialReviews.EditorialReview.Content.pyval.encode('utf8'))
         b.slug = create_slug(b)
-        b.save()
 
         try:
-            category_search = categories.objects.get(category=cat.Items.Item.BrowseNodes.BrowseNode.Ancestors.BrowseNode.Name)
-            #c = categories(category=category_search,book=b)
-            category_search.book = b
-            category_search.save()
+            c = categories(category=cat.Items.Item.BrowseNodes.BrowseNode.Ancestors.BrowseNode.Name)
+            c.save()
+            b.category=c
+            b.save()
+
 
         except:
-            c = categories(category=cat.Items.Item.BrowseNodes.BrowseNode.Ancestors.BrowseNode.Name,book=b)
-            c.save()
+            category_add = categories.objects.get(category=cat.Items.Item.BrowseNodes.BrowseNode.Ancestors.BrowseNode.Name)
+            #b.category__categories=cat.Items.Item.BrowseNodes.BrowseNode.Ancestors.BrowseNode.Name
+            b.save()
+            category_add.books_set.add(b)
+            b.save()
+            #add2category = b.category_set.create(b)
+
+
+        #try:
+        #    b.objects.get(category__category=cat.Items.Item.BrowseNodes.BrowseNode.Ancestors.BrowseNode.Name)
+        #    b.category = (cat.Items.Item.BrowseNodes.BrowseNode.Ancestors.BrowseNode.Name)
+
+        #except:
+        #    c.save()
+        #    print 'halooooooooooooo'
+            #b.category__category = c
+
+
+
+        #try:
+        #    b.objects.get(category__category=cat.Items.Item.BrowseNodes.BrowseNode.Ancestors.BrowseNode.Name)
+            #category_search = categories.objects.get(category=cat.Items.Item.BrowseNodes.BrowseNode.Ancestors.BrowseNode.Name)
+            #c = categories(category=category_search,book=b)
+        #    category_search.book = b
+        #    category_search.save()
+
+        #except:
+        #    c = categories(category=cat.Items.Item.BrowseNodes.BrowseNode.Ancestors.BrowseNode.Name,book=b)
+        #    c.save()
 
         #c.category = (cat.Items.Item.BrowseNodes.BrowseNode.Ancestors.BrowseNode.Name)
         #c.book = (b.id)
