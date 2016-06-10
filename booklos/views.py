@@ -1,5 +1,5 @@
 from django.shortcuts import render , get_object_or_404 , redirect
-from models import books
+from models import books,categories
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Create your views here.
@@ -8,7 +8,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 def book_list(request):
 
     query_list = books.objects.all()
-    paginator = Paginator(query_list, 5)
+    category_list = categories.objects.all()
+    paginator = Paginator(query_list, 8)
 
     page = request.GET.get('page')
     try:
@@ -17,7 +18,7 @@ def book_list(request):
         query = paginator.page(1)
     except EmptyPage:
         query = paginator.page(paginator.num_pages)
-    context = {'query':query}
+    context = {'query':query,'category_list':category_list}
 
     return render(request, "book_list.html",context)
 
