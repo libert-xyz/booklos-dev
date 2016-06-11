@@ -1,6 +1,6 @@
 import os
 import sys
-from amazon.api import AmazonAPI
+#from amazon.api import AmazonAPI
 from booklos.models import books, categories
 from django.conf import settings
 from django.db.models.signals import pre_save
@@ -24,6 +24,17 @@ def create_slug(instance, new_slug=None):
     return slug
 
 
+def create_slug_category(instance, new_slug=None):
+    slug = slugify(instance.category)
+    if new_slug is not None:
+        slug = new_slug
+    qs = categories.objects.filter(category_slug=slug).order_by("-id")
+    exists = qs.exists()
+    if exists:
+        new_slug="%s-%s" %(slug, qs.first().id)
+        return create_slug_category(instance, new_slug=new_slug)
+    return slug
+
 def run():
 
     api = API(locale='us')
@@ -38,10 +49,10 @@ def run():
         detail = api.item_lookup(str(i.ASIN))
         image = api.item_lookup(str(i.ASIN), ResponseGroup='Images')
         editorial_review = api.item_lookup(str(i.ASIN), ResponseGroup='EditorialReview')
-        attributes = api.item_lookup(str(i.ASIN),ResponseGroup='ItemAttributes')
         cat = api.item_lookup(str(i.ASIN),ResponseGroup='BrowseNodes')
         ##Database write
         b = books()
+        c = categories()
 
         #c = categories()
         b.id=(i.ASIN)
@@ -49,12 +60,8 @@ def run():
 
         try :
             b.author=(i.ItemAttributes.Author.pyval.encode('utf8'))
-            b.publisher = (attributes.Items.Item.ItemAttributes.Publisher)
-            b.number_pages = (attributes.Items.Item.ItemAttributes.NumberOfPages)
         except:
             b.author=None
-            b.publisher=None
-            b.number_pages=None
 
         b.url=(detail.Items.Item.DetailPageURL)
         ##Fix this , price change all the time
@@ -64,7 +71,11 @@ def run():
         b.slug = create_slug(b)
 
         try:
-            c = categories(category=cat.Items.Item.BrowseNodes.BrowseNode.Ancestors.BrowseNode.Name)
+            #ca = categories()
+            #c = categories(category=cat.Items.Item.BrowseNodes.BrowseNode.Ancestors.BrowseNode.Name)
+            c.category=cat.Items.Item.BrowseNodes.BrowseNode.Ancestors.BrowseNode.Name
+            c.category_slug = create_slug_category(c)
+            #categories.category_slug = create_slug_category(c)
             c.save()
             b.category=c
             b.save()
@@ -87,32 +98,3 @@ def run():
         #    c.save()
         #    print 'halooooooooooooo'
             #b.category__category = c
-
-
-
-        #try:
-        #    b.objects.get(category__category=cat.Items.Item.BrowseNodes.BrowseNode.Ancestors.BrowseNode.Name)
-            #category_search = categories.objects.get(category=cat.Items.Item.BrowseNodes.BrowseNode.Ancestors.BrowseNode.Name)
-            #c = categories(category=category_search,book=b)
-        #    category_search.book = b
-        #    category_search.save()
-
-        #except:
-        #    c = categories(category=cat.Items.Item.BrowseNodes.BrowseNode.Ancestors.BrowseNode.Name,book=b)
-        #    c.save()
-
-        #c.category = (cat.Items.Item.BrowseNodes.BrowseNode.Ancestors.BrowseNode.Name)
-        #c.book = (b.id)
-
-
-        #### if book exists update the price and the update timestamp
-
-        #try:
-
-        #    q = books.objects.get(id=i.asin)
-            #if len(new) > 0:
-        #    if i.price_and_currency[0] != None:
-        #        q.price = i.price_and_currency[0]
-        #    q.save()
-
-        #except:

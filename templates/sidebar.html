@@ -8,21 +8,16 @@
 
 
       <br><hr>
-
-
-
                 <div class="list-group">
 
                   <a href="#" class="list-group-item active">
                       E-Books Categories
                   </a>
                   {% for obj in category_list%}
-                    <a href="#" class="list-group-item">{{obj.category}}</a>
+                    <a href="{{obj.category_slug}}" class="list-group-item">{{obj.category}}</a>
                     {% endfor %}
 
                 </div>
-
-
       <hr>
 
       <iframe src="//rcm-na.amazon-adsystem.com/e/cm?o=1&p=14&l=ur1&category=kindlerotating&f=ifr&linkID=5687a0533b90c4b2f0cfb067da609100&t=booklos-20&tracking_id=booklos-20"

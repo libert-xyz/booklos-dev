@@ -21,13 +21,11 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^book/', include("booklos.urls", namespace='booklos')),
+    url(r'^nuvops/', admin.site.urls),
+    url(r'^', include("booklos.urls", namespace='booklos')),
 ]
 
 
 if settings.DEBUG:
 
 	urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-
-
