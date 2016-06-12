@@ -15,6 +15,8 @@ class categories(models.Model):
     category_slug = models.SlugField(unique=True)
     #book = models.ForeignKey(books, on_delete=models.CASCADE)
 
+    def get_absolute_url(self):
+        return reverse('booklos:category',kwargs={'slug': self.category_slug})
 
     def __str__(self):
         return self.category

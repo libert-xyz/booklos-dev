@@ -5,7 +5,6 @@ from views import *
 urlpatterns = [
 
        url(r'^$', book_list,name='list'),
-       url(r'^(?P<slug>[\w-]+)/$', book_detail,name='detail'),
-
-
+       url(r'^book/(?P<slug>[\w-]+)/$', book_detail,name='detail'),
+       url(r'^category/(?P<slug>[\w-]+)/$', book_category,name='category'),
          ]

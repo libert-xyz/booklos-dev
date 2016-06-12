@@ -14,7 +14,7 @@
                       E-Books Categories
                   </a>
                   {% for obj in category_list%}
-                    <a href="{{obj.category_slug}}" class="list-group-item">{{obj.category}}</a>
+                    <a href="{{obj.get_absolute_url}}" class="list-group-item">{{obj.category}}</a>
                     {% endfor %}
 
                 </div>

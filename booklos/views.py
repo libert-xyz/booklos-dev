@@ -28,3 +28,10 @@ def book_detail(request,slug=None):
     context = {'instance':instance}
 
     return render(request,"book_detail.html",context)
+
+def book_category(request, slug=None):
+
+    c = get_object_or_404(categories,category_slug=slug)
+    instance = books.objects.filter(category=c)
+    context = {'instance':instance,'c':c}
+    return render(request, "book_category.html",context)

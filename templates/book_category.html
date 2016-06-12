@@ -9,7 +9,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Best Free e-books selections. Updated daily. Kindle Free Books">
 <meta name="author" content="booklos">
-<meta name="Keywords" content="kindle, books, free books, free kindle books, free ebooks, e-books, free e-books">
+<meta name="Keywords" content="kindle, books, free books, free kindle books, free ebooks, e-books, free e-books, {{c}}">
 
 
 <meta property="og:url" content="http://www.booklos.com" />
@@ -19,7 +19,7 @@
 <meta property="og:image" content="http://static01.nyt.com/images/2015/02/19/arts/international/19iht-btnumbers19A/19iht-btnumbers19A-facebookJumbo-v2.jpg" />
 
 
-<title>Booklos - Free Kindle Books - E-books</title>
+<title>Booklos - Free Kindle Books - E-books - Category {{c}}</title>
 
 {% endblock title%}
 
@@ -36,13 +36,20 @@
 
         <div class="col-md-9">
 
-          {% include 'slider.html' %}
+
+          <ol class="breadcrumb">
+                <li><a href="http://booklos.com">Home</a></li>
+                <li class="active">{{c}}</li>
+          </ol>
+
 
             <div class="row">
 
               <!-- Items -->
 
-              {% for obj in query%}
+              {% for obj in instance%}
+
+
 
 
                 <div class="col-sm-4 col-lg-4 col-md-4">
@@ -63,6 +70,17 @@
 
 
                         </div>
+                          <!--
+                        <div class="ratings">
+                            <p class="pull-right">15 reviews</p>
+                            <p>
+                                <span class="glyphicon glyphicon-star"></span>
+                                <span class="glyphicon glyphicon-star"></span>
+                                <span class="glyphicon glyphicon-star"></span>
+                                <span class="glyphicon glyphicon-star"></span>
+                                <span class="glyphicon glyphicon-star"></span>
+                            </p>
+                        </div> -->
 
                     </div>
                 </div>
@@ -70,33 +88,28 @@
 
                 {% endfor %}
 
-                <div class="col-sm-4 col-lg-4 col-md-4">
-                    <iframe src="//rcm-na.amazon-adsystem.com/e/cm?o=1&p=12&l=ur1&category=dominoprojectbooks&f=ifr&linkID=2e797a985ebb3dbbfe7d22d03f63c14b&t=booklos-20&tracking_id=booklos-20"
-                    width="300" height="250" scrolling="no" border="0" marginwidth="0" style="border:none;" frameborder="0"></iframe>
-                </div>
-
             </div>
 
 
             <!-- Pager -->
             <ul class="pager">
                 <li class="previous">
-                  {% if query.has_previous %}
-                      <a href="?page={{ query.previous_page_number }}">&larr;
+                  {% if instance.has_previous %}
+                      <a href="?page={{ instance.previous_page_number }}">&larr;
                         Previous</a>
                   {% endif %}
 
                 </li>
 
                 <span class="current">
-                    Page {{ query.number }} of {{ query.paginator.num_pages }}.
+                    Page {{ instance.number }} of {{ instance.paginator.num_pages }}.
                 </span>
 
 
                 <li class="next">
 
-                  {% if query.has_next %}
-                      <a href="?page={{ query.next_page_number }}">Next  &rarr;</a>
+                  {% if instance.has_next %}
+                      <a href="?page={{ instance.next_page_number }}">Next  &rarr;</a>
                   {% endif %}
 
                 </li>
