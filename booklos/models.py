@@ -37,6 +37,7 @@ class books(models.Model):
     price = models.CharField(max_length=15)
     url = models.TextField()
     category = models.ForeignKey(categories,on_delete=models.CASCADE,null=True)
+    check_status = models.CharField(max_length=10,null=True)
 
     #updated = models.DateTimeField(auto_now=True, auto_now_add=False)
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)

@@ -32,6 +32,21 @@ def book_detail(request,slug=None):
 def book_category(request, slug=None):
 
     c = get_object_or_404(categories,category_slug=slug)
+    category_list = categories.objects.all()
+
     instance = books.objects.filter(category=c)
-    context = {'instance':instance,'c':c}
+
+
+    paginator = Paginator(instance, 8)
+
+    page = request.GET.get('page')
+    try:
+        query= paginator.page(page)
+    except PageNotAnInteger:
+        query = paginator.page(1)
+    except EmptyPage:
+        query = paginator.page(paginator.num_pages)
+
+
+    context = {'instance':query,'c':c,'category_list':category_list}
     return render(request, "book_category.html",context)
