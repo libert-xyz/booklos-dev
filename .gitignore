@@ -1,3 +1,5 @@
 *.pyc
 venv
 .htaccess
+db.sqlite3
+migrations/

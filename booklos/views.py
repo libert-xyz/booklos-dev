@@ -9,7 +9,7 @@ def book_list(request):
 
     query_list = books.objects.all()
     category_list = categories.objects.all()
-    paginator = Paginator(query_list, 8)
+    paginator = Paginator(query_list, 11)
 
     page = request.GET.get('page')
     try:
