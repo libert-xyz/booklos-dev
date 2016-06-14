@@ -48,8 +48,9 @@ def run():
         try:
             updated = books.objects.get(id=str(i.ASIN))
             updated.check_status='Updated'
-            #print i.ItemAttributes.Title.pyval.encode('utf8')
-            
+            updated.save()
+            print i.ItemAttributes.Title.pyval.encode('utf8')
+
 
         except ObjectDoesNotExist:
 
