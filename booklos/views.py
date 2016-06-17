@@ -1,11 +1,16 @@
-from django.shortcuts import render , get_object_or_404 , redirect
+from django.shortcuts import render , get_object_or_404 , redirect, render_to_response
 from models import books,categories
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.context_processors import csrf
 
 # Create your views here.
 
 
 def book_list(request):
+
+
+    #query_list={}
+    #query_list.update(csrf(request))
 
     query_list = books.objects.all()
     category_list = categories.objects.all()
@@ -50,3 +55,14 @@ def book_category(request, slug=None):
 
     context = {'instance':query,'c':c,'category_list':category_list}
     return render(request, "book_category.html",context)
+
+def book_search(request):
+    if request.method == 'POST':
+        search_text = request.POST['search_text']
+
+    else:
+        search_text = ''
+
+    book = books.objects.filter(title__contains=search_text)
+
+    return render_to_response('ajax_search.html', {'book': book})

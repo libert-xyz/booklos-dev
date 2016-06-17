@@ -1,0 +1,16 @@
+{% if book.count > 0 %}
+
+
+      {% for i in book %}
+
+        <li><a href="{{i.get_absolute_url}}">{{i.title}}</a></li>
+
+      {% endfor%}
+
+
+{% else %}
+
+  <li>None to show</li>
+
+
+{% endif %}
