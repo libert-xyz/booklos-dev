@@ -33,6 +33,7 @@ class books(models.Model):
     slug = models.SlugField(unique=True)
     description = models.TextField()
     image = models.TextField()
+    image_medium = models.TextField()
     author = models.CharField(max_length=101, null=True)
     price = models.CharField(max_length=15)
     url = models.TextField()

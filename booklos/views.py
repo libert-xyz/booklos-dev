@@ -1,7 +1,7 @@
 from django.shortcuts import render , get_object_or_404 , redirect, render_to_response
 from models import books,categories
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.core.context_processors import csrf
+from django.template.context_processors import csrf
 
 # Create your views here.
 

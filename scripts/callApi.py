@@ -78,6 +78,7 @@ def run():
             ##Fix this , price change all the time
             b.price = 'Free'
             b.image =    (image.Items.Item.LargeImage.URL)
+            b.image_medium = (image.Items.Item.MediumImage.URL)
             b.description = (editorial_review.Items.Item.EditorialReviews.EditorialReview.Content.pyval.encode('utf8'))
             b.slug = create_slug(b)
 
