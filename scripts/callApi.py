@@ -39,8 +39,8 @@ def create_slug_category(instance, new_slug=None):
 def run():
 
     api = API(locale='us')
-    #query = api.item_search('KindleStore', Keywords='free kindle books')
-    query = api.item_search('KindleStore', Keywords='top 100 free kindle ebooks')
+    query = api.item_search('KindleStore', Keywords='free kindle books')
+    #query = api.item_search('KindleStore', Keywords='top 100 free kindle ebooks')
 
 
     for i in query:
