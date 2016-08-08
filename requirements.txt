@@ -1,0 +1,8 @@
+bottlenose==0.6.3
+Django==1.9.6
+django-extensions==1.6.7
+lxml==3.6.0
+python-amazon-product-api==0.2.8
+python-amazon-simple-product-api==2.1.0
+python-dateutil==2.5.3
+six==1.10.0
